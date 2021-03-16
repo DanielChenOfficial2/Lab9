@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>REST Form Demo</title>
+
+    <style>
+      body {
+        font-family: Arial;
+      }
+
+      #recordForm {
+        display: none;
+      }
+
+      #recordIDcontainer {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Endpoint Tester</h1>
+	
+    <form id="actionForm">
+
+      <label for="endpoint">Endpoint:</label>
+      <input type="text" value="http://localhost:3000/posts" id="endpoint">
+      <br />
+	  <button type="submit" onclick="doLog()">console.log</button>
+		<button type="submit" id="error" onclick="doError()">console.error</button>
+		<button type="submit" id="table" onclick="doTable()">console.table</button>
+		<button type="submit" id="dir" onclick="doDir()">console.dir</button>
+		<button type="submit" id="dirxml" onclick="doDirxml()">console.dirxml</button>
+		<button type="submit" id="group" onclick="doGroup()">console.group</button>
+		<button type="submit" id="time" onclick="doTime()">console.time</button>
+		<button type="submit" id="trace" onclick="doTrace()">console.trace</button>
+
+      <label for="action">Action:</label>
+      <select id="action">
+        <option disabled>Pick CRUD Action:</option>
+        <option value="List All">List All</option>
+        <option value="List One">List One</option>
+        <option value="Create">Create</option>
+        <option value="Update">Update</option>
+        <option value="Delete">Delete</option>
+      </select>
+
+      <button type="submit">Create Request</button>
+    </form>
+
+    <form id="recordForm">
+      <div>
+        <label for="author">Author</label>
+        <input type="text" name="author" id="author" />
+      </div>
+
+      <div>
+        <label for="title">Title: </label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+        />
+      </div>
+
+      <div id="recordIDcontainer">
+        <label for="recordID">Record ID: </label>
+        <input
+          type="recordID"
+          name="recordID"
+          id="recordID"
+        />
+      </div>
+
+      <div>
+        <button type="submit">Execute</button>
+		
+      </div>
+    </form>
+
+    <hr />
+
+    <div>
+      <output id="output"></output>
+    </div>
+
+    <!-- Main Script -->
+	<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS && TrackJS.install({ 
+    token: "7f1a1532230e41899ac9591bd0ac100b"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+</script>
+    <script >
+      TrackJS.track('Testing TrackJS!');
+	  class TestError extends Error {
+		constructor(message) {
+			super(message);
+			this.description = "Changed to something more useful";
+		}
+      }
+	  
+	  function test(a) {
+		let url = document.getElementById("endpoint").value;
+		return url += a;
+	  }
+	  function remove() {
+		document.getElementById("action").remove();
+		let url = document.getElementById("action").value;
+		return url;
+	  }
+		
+		
+		function doLog() {
+			console.log(test("seomething funny"));
+		}
+		function doError() {
+			try {
+			(remove())
+			}
+			catch(err) {
+			console.error(err);
+			throw new TestError("did nothing");
+			}
+			finally {
+				console.log("this did something");
+			}
+		}
+		function doTable() {
+			
+		
+		console.table([
+  {
+    one: test("somethingfunny")
+  },
+  {
+    one: test(0)
+  },
+  {
+    one: test(true)
+  }
+  ]);
+
+		}
+		function doDir() {
+			console.dir(document);
+		}
+		function doDirxml() {
+			console.dirxml(document);
+		}
+		function doGroup() {
+			const label = "random strings";
+			console.group(label);
+			console.info(test("somethingfunny"))
+			console.info(test(0));
+			console.info(test(true))
+			console.groupEnd(label);
+		}
+		function doTime() {
+			console.time();
+			doGroup();
+			console.timeEnd();
+		}
+		function doTrace() {
+			console.trace();
+		}
+    </script>
+  </body>
+</html>
